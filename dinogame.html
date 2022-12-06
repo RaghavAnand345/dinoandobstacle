@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>iDragon - JavaScript Game</title>
+<style>
+*{
+margin:0;
+padding:0;
+}
+body {
+background:red;
+overflow:hidden;
+}
+.gameContainer {
+background:url(bg.png);
+background-repeat:no-repeat;
+background-size:100vw 100vh;
+width:100%;
+height:100vh;
+}
+.dino {
+background:url(dino.png);
+background-size:cover;
+width:233px;
+height:114px;
+position:absolute;
+bottom:0;
+left:52px;
+}
+.obstacle {
+width:166px;
+height:113px;
+background:url(dragon.png);
+background-size:cover;
+position:absolute;
+bottom:0;
+left:44vw;
+}
+.animateDino {
+animation:dino 0.6s linear;
+}
+.obstacleAni {
+animation:obstacleAni 5s linear infinite;
+}
+@keyframes dino {
+0%{
+bottom:0;
+}
+50%{
+bottom:422px;
+}
+100%{
+bottom:0;
+}
+}
+@keyframes obstacleAni{
+0%{
+left:100vw;
+}
+100%{
+left:-10vw;
+}
+}
+.gameOver {
+visibility:hidden;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+font-family:sans-serif;
+font-size:30px;
+background:red;
+padding:10px;
+border-radius:5px;
+texr-align:center;
+}
+.gameOver button{
+background:none;
+border:none;
+outline:none;
+background:red;
+border:2px solid white;
+border-radius:5px;
+color:white;
+padding:5px;
+margin:5px;
+margin-left:10px;
+
+}
+</style>
+</head>
+<body>
+<div class = "gameContainer">
+<div class = "gameOver">Game Over <button onclick = "location.reload()">play again</button></div>
+<div class = "dino"></div>
+<div class ="obstacle obstacleAni"></div>
+</div>
+<script>
+document.onkeydown = function(e) {
+	console.log("key code is",e.keyCode);
+	if(e.keyCode==38){
+		dino = document.querySelector(".dino");
+		dino.classList.add("animateDino");
+		setTimeout(()=>{
+			dino.classList.remove("animateDino");
+	},700);
+}
+	if(e.keyCode==39){
+		dino = document.querySelector(".dino");
+		dinox = parseInt(window.getComputedStyle(dino,null).getPropertyValue("left"));
+		dino.style.left = dinox+112+"px";
+		}
+	if(e.keyCode==37){
+		dino = document.querySelector(".dino");
+		dinox = parseInt(window.getComputedStyle(dino,null).getPropertyValue("left"));
+		dino.style.left = (dinox-112)+"px";
+		}
+}
+	
+setInterval(()=>{
+	dino = document.querySelector(".dino");
+	gameOver = document.querySelector(".gameOver");
+	obstacle = document.querySelector(".obstacle");
+	score = document.querySelector(".obstacle");
+	dx = parseInt(window.getComputedStyle(dino,null).getPropertyValue("left"));
+	dy = parseInt(window.getComputedStyle(dino,null).getPropertyValue("top"));
+	
+	ox = parseInt(window.getComputedStyle(obstacle,null).getPropertyValue("left"));
+	oy = parseInt(window.getComputedStyle(obstacle,null).getPropertyValue("top"));
+	offsetX =Math.abs(dx-ox);
+	offsetY =Math.abs(dy-oy);
+	console.log(offsetX,offsetY);
+	if(offsetX<93&&offsetY<52){
+		gameOver.style.visibility = "visible";
+		obstacle.classList.remove("obstacleAni");
+	}
+	
+},100);
+</script>
+</body>
+</html>
